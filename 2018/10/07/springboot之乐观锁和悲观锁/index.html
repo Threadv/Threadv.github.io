@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>springboot之乐观锁和悲观锁 | April</title>
+  <meta name="description" content="springboot之乐观锁和悲观锁 原文：https:&#x2F;&#x2F;blog.csdn.net&#x2F;east123321&#x2F;article&#x2F;details&#x2F;81084158  悲观锁：比较适合写入操作比较频繁的场景，如果出现大量的读取操作，每次读取的时候都会进行加锁，这样会增加大量的锁的开销，降低了系统的吞吐量。 乐观锁：比较适合读取操作比较频繁的场景，如果出现大量的写入操作，数据发生冲突的可能性就会增大，为">
+<meta property="og:type" content="article">
+<meta property="og:title" content="springboot之乐观锁和悲观锁">
+<meta property="og:url" content="http://example.com/2018/10/07/springboot%E4%B9%8B%E4%B9%90%E8%A7%82%E9%94%81%E5%92%8C%E6%82%B2%E8%A7%82%E9%94%81/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="springboot之乐观锁和悲观锁 原文：https:&#x2F;&#x2F;blog.csdn.net&#x2F;east123321&#x2F;article&#x2F;details&#x2F;81084158  悲观锁：比较适合写入操作比较频繁的场景，如果出现大量的读取操作，每次读取的时候都会进行加锁，这样会增加大量的锁的开销，降低了系统的吞吐量。 乐观锁：比较适合读取操作比较频繁的场景，如果出现大量的写入操作，数据发生冲突的可能性就会增大，为">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-10-07T13:36:56.000Z">
+<meta property="article:modified_time" content="2021-09-22T11:19:04.647Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="线程">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://example.com/2018/10/07/springboot%E4%B9%8B%E4%B9%90%E8%A7%82%E9%94%81%E5%92%8C%E6%82%B2%E8%A7%82%E9%94%81/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/Threadv" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">April</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">Repository</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">Books</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/Threadv" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/Threadv" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/Threadv" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8/">云服务器</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Design-Patterns/" rel="tag">Design Patterns</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Html/" rel="tag">Html</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Http/" rel="tag">Http</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sort/" rel="tag">Sort</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/" rel="tag">algorithm</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ali-weixin-pay/" rel="tag">ali/weixin pay</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/centOS/" rel="tag">centOS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/idea/" rel="tag">idea</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/" rel="tag">jvm</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/logstash/" rel="tag">logstash</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pytest/" rel="tag">pytest</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/" rel="tag">springboot</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/util/" rel="tag">util</a><span class="tag-list-count">16</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/" rel="tag">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wechat/" rel="tag">wechat</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/" rel="tag">我的世界</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E7%A8%8B/" rel="tag">线程</a><span class="tag-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Design-Patterns/" style="font-size: 13.64px;">Design Patterns</a> <a href="/tags/Git/" style="font-size: 13px;">Git</a> <a href="/tags/Html/" style="font-size: 13px;">Html</a> <a href="/tags/Http/" style="font-size: 13.27px;">Http</a> <a href="/tags/JavaScript/" style="font-size: 13.55px;">JavaScript</a> <a href="/tags/Sort/" style="font-size: 13.82px;">Sort</a> <a href="/tags/algorithm/" style="font-size: 13.18px;">algorithm</a> <a href="/tags/ali-weixin-pay/" style="font-size: 13.36px;">ali/weixin pay</a> <a href="/tags/centOS/" style="font-size: 13px;">centOS</a> <a href="/tags/docker/" style="font-size: 13.73px;">docker</a> <a href="/tags/elasticsearch/" style="font-size: 13px;">elasticsearch</a> <a href="/tags/go/" style="font-size: 13.18px;">go</a> <a href="/tags/hexo/" style="font-size: 13px;">hexo</a> <a href="/tags/idea/" style="font-size: 13px;">idea</a> <a href="/tags/java/" style="font-size: 14px;">java</a> <a href="/tags/jvm/" style="font-size: 13.18px;">jvm</a> <a href="/tags/linux/" style="font-size: 13.82px;">linux</a> <a href="/tags/logstash/" style="font-size: 13.27px;">logstash</a> <a href="/tags/mysql/" style="font-size: 13.45px;">mysql</a> <a href="/tags/php/" style="font-size: 13.18px;">php</a> <a href="/tags/pytest/" style="font-size: 13px;">pytest</a> <a href="/tags/python/" style="font-size: 13.36px;">python</a> <a href="/tags/springboot/" style="font-size: 13.73px;">springboot</a> <a href="/tags/tomcat/" style="font-size: 13px;">tomcat</a> <a href="/tags/util/" style="font-size: 13.91px;">util</a> <a href="/tags/vue/" style="font-size: 13px;">vue</a> <a href="/tags/wechat/" style="font-size: 13.09px;">wechat</a> <a href="/tags/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/" style="font-size: 13px;">我的世界</a> <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" style="font-size: 13.09px;">消息队列</a> <a href="/tags/%E7%BA%BF%E7%A8%8B/" style="font-size: 13.18px;">线程</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a><span class="archive-list-count">22</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/17/linux/linux_shell/" class="title">linux—shell</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-17T05:02:19.000Z" itemprop="datePublished">2020-05-17</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/16/linux/linux_awk_sed/" class="title">linux-awk\sed 示例</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-16T07:02:19.000Z" itemprop="datePublished">2020-05-16</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/11/linux/linux_bash/" class="title">linux—bash</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-11T07:02:19.000Z" itemprop="datePublished">2020-04-11</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/16/go%E5%9F%BA%E7%A1%80/" class="title">go基础知识</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-16T11:20:35.000Z" itemprop="datePublished">2020-03-16</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/16/go%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/" class="title">go安装和配置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-16T11:20:35.000Z" itemprop="datePublished">2020-03-16</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-springboot之乐观锁和悲观锁" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      springboot之乐观锁和悲观锁
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2018/10/07/springboot%E4%B9%8B%E4%B9%90%E8%A7%82%E9%94%81%E5%92%8C%E6%82%B2%E8%A7%82%E9%94%81/" class="article-date">
+	  <time datetime="2018-10-07T13:36:56.000Z" itemprop="datePublished">2018-10-07</time>
+	</a>
+</span>
+        
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/%E7%BA%BF%E7%A8%8B/" rel="tag">线程</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2018/10/07/springboot%E4%B9%8B%E4%B9%90%E8%A7%82%E9%94%81%E5%92%8C%E6%82%B2%E8%A7%82%E9%94%81/#comments" class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h4 id="springboot之乐观锁和悲观锁"><a class="markdownIt-Anchor" href="#springboot之乐观锁和悲观锁"></a> springboot之乐观锁和悲观锁</h4>
+<p>原文：<a target="_blank" rel="noopener" href="https://blog.csdn.net/east123321/article/details/81084158">https://blog.csdn.net/east123321/article/details/81084158</a></p>
+<hr />
+<p>悲观锁：比较适合写入操作比较频繁的场景，如果出现大量的读取操作，每次读取的时候都会进行加锁，这样会增加大量的锁的开销，降低了系统的吞吐量。</p>
+<p>乐观锁：比较适合读取操作比较频繁的场景，如果出现大量的写入操作，数据发生冲突的可能性就会增大，为了保证数据的一致性，应用层需要不断的重新获取数据，这样会增加大量的查询操作，降低了系统的吞吐量。</p>
+<p>一、乐观锁</p>
+<p>1、乐观锁：<br />
+每次获取数据的时候，都不会担心数据被修改，所以每次获取数据的时候都不会进行加锁，由于数据没有进行加锁，期间该数据可以被其他线程进行读写操作。</p>
+<p>2、乐观锁的原理</p>
+<p>乐观锁，大多是基于数据版本   Version ）记录机制实现。何谓数据版本？即为数据增加一个版本标识，在基于数据库表的版本解决方案中，一般是通过为数据库表增加一个 “version” 字段来 实现。 读取出数据时，将此版本号一同读出，之后更新时，对此版本号加一。此时，将提 交数据的版本数据与数据库表对应记录的当前版本信息进行比对，如果提交的数据 版本号大于数据库表当前版本号，则予以更新，否则认为是过期数据。</p>
+<p>3、乐观锁的实现</p>
+<p>在实体类中添加一个int型的字段，并标注注解@Version即可，注意该字段要在主键id的后面。</p>
+<ul>
+<li>User.java</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Id</span></span><br><span class="line"><span class="meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span></span><br><span class="line"><span class="keyword">private</span> Long id;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Version</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> version;</span><br><span class="line"> </span><br><span class="line">.......</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>Controller.java</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/test1&quot;)</span></span><br><span class="line"><span class="meta">@RetryOnOptimisticLockingFailure</span><span class="comment">//最后一步</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String  <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		User user=userRepo.findByNumber(<span class="string">&quot;20180716114900229366&quot;</span>);</span><br><span class="line">		user.setStartTime(<span class="string">&quot;22232322&quot;</span>);</span><br><span class="line">		System.out.println(<span class="string">&quot;test1：&quot;</span>+leaveApproval.getVersion());</span><br><span class="line">		userRepo.save(user);</span><br><span class="line">		<span class="keyword">return</span> <span class="string">&quot;success&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/test2&quot;)</span></span><br><span class="line"><span class="meta">@RetryOnOptimisticLockingFailure</span><span class="comment">//最后一步</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String  <span class="title">test2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		User user=<span class="keyword">new</span> User();</span><br><span class="line">		user=userRepo.findByNumber(<span class="string">&quot;20180716114900229366&quot;</span>);</span><br><span class="line">		leaveApproval.setEndTime(<span class="string">&quot;111111&quot;</span>);</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			Thread.sleep(<span class="number">5000</span>);</span><br><span class="line">		&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println(<span class="string">&quot;test2：&quot;</span>+leaveApproval.getVersion());</span><br><span class="line">		userRepo.save(leaveApproval);</span><br><span class="line">		<span class="keyword">return</span> <span class="string">&quot;success&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>先执行/test2，然后在5秒之内执行/test1,来模拟多个用户对同一个资源的并发操作。此时便会报错</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">2018</span>-<span class="number">07</span>-<span class="number">17</span> <span class="number">17</span>:<span class="number">03</span>:<span class="number">14.254</span> ERROR <span class="number">6816</span> --- [p-nio-<span class="number">80</span>-exec-<span class="number">2</span>] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() <span class="keyword">for</span> servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.orm.ObjectOptimisticLockingFailureException: Batch update returned unexpected row count from update [<span class="number">0</span>]; actual row count: <span class="number">0</span>; expected: <span class="number">1</span>; nested exception is org.hibernate.StaleStateException: Batch update returned unexpected row count from update [<span class="number">0</span>]; actual row count: <span class="number">0</span>; expected: <span class="number">1</span>] with root cause</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>当test2 save时，数据库通过对比version发现 该条数据已经过期，便会终止save 操作。</p>
+<p>接下来只要捕获并处理这个异常即可。</p>
+<p>3、乐观锁更新失败后的解决方案</p>
+<p>用spring AOP思想来实现处理异常并实现重试机制。以下。</p>
+<p>首先自定义一个注解：</p>
+<p>@RetryOnOptimisticLockingFailure</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target(ElementType.METHOD)</span> </span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> RetryOnOptimisticLockingFailure &#123;</span><br><span class="line"> </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>然后 用AOP抛出异常 并进行重试。</p>
+<p><strong>注意：捕获异常时，网上的大部分文章都是只有OptimisticLockingFailureException这一种异常，这是不够的，可以先e.printStackTrace();看一看都有哪些异常，再进行捕获</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RetryOnOptimisticLockingAspect</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger= LoggerFactory.getLogger(RetryOnOptimisticLockingFailure.class);</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> maxRetries = <span class="number">5</span>;<span class="comment">//最多重试的次数</span></span><br><span class="line">	<span class="meta">@Pointcut(&quot;@annotation(RetryOnOptimisticLockingFailure)&quot;)</span><span class="comment">//自定义的注解作为切点</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">retryOnOptFailure</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">	<span class="meta">@Around(&quot;retryOnOptFailure()&quot;)</span><span class="comment">//around注解可以在 目标方法 之前执行 也可以在目标方法之后</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">doConcurrentOperation</span><span class="params">(ProceedingJoinPoint pjp)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> numAttempts = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">do</span> &#123;</span><br><span class="line">			numAttempts++;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				<span class="keyword">return</span> pjp.proceed();</span><br><span class="line">			&#125; <span class="keyword">catch</span> (Exception e) &#123;<span class="comment">//此处捕获异常时，网上的大部分文章都是只有OptimisticLockingFailureException这一种异常，这是不够的，可以先e.printStackTrace();看一看都有哪些异常，在进行捕获</span></span><br><span class="line">				 <span class="keyword">if</span> (e <span class="keyword">instanceof</span> ObjectOptimisticLockingFailureException || e <span class="keyword">instanceof</span> StaleStateException  ||e <span class="keyword">instanceof</span> JpaSystemException ) &#123;</span><br><span class="line">					 logger.info(<span class="string">&quot;更新数据---乐观锁重试中---&quot;</span>);</span><br><span class="line">					 <span class="keyword">if</span> (numAttempts &gt; maxRetries)&#123;</span><br><span class="line">						 logger.info(<span class="string">&quot;抛出异常&quot;</span>);</span><br><span class="line">						 <span class="keyword">throw</span> e;</span><br><span class="line">					 &#125;</span><br><span class="line">				&#125;</span><br><span class="line"> </span><br><span class="line">			&#125;</span><br><span class="line">		&#125;<span class="keyword">while</span> (numAttempts &lt; <span class="keyword">this</span>.maxRetries);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>最后在controller的对应的方法上 添加该注解即可。</p>
+<hr />
+<p>二、悲观锁</p>
+<p>1、 悲观锁</p>
+<p>每次在读取或者加载一条记录的时候，都会锁住被加载的记录，此时当其他事务如果要更新或者是加载此条记录就会因为不能获得锁而阻塞，但是其他事务还是可以插入和删除记录的。</p>
+<p>2、 实现</p>
+<p>在JDBC中使用悲观锁，需要使用select for update，即</p>
+<p>select * from A Where id=1 for update;</p>
+<p>3、 实例代码</p>
+<p>先写查询的Jpa  接口</p>
+<p>UserRepo.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Lock(LockModeType.PESSIMISTIC_WRITE)</span><span class="comment">//这就相当与 select for update 一会执行的时候看打印的sql语句就知道了</span></span><br><span class="line"><span class="meta">@Query(value = &quot;select u from User u where phoneNumber=?1  &quot;)</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> User <span class="title">findByPhoneNumber</span><span class="params">(String phoneNumber)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>然后写调用它的service服务，为了便于观察，写两个方法</p>
+<p>注意：1、 一定要声明事务管理@Transactional，不添加注解会报错 no transation。</p>
+<p>2、 事务管理的注解一定要 包住 对数据库的持久化操作  。即 find–set-save。</p>
+<p>AppControllerService.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">   <span class="meta">@Transactional</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> User <span class="title">findByPhoneNumber</span><span class="params">(String phoneNumber)</span></span>&#123;</span><br><span class="line">	User user = userRepo.findByPhoneNumber(phoneNumber);</span><br><span class="line">	user.setUsername(<span class="string">&quot;第一步111&quot;</span>);</span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		Thread.sleep(<span class="number">12000</span>);<span class="comment">//线程sleep12秒</span></span><br><span class="line">	&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">		e.printStackTrace();</span><br><span class="line">	&#125;</span><br><span class="line">	userRepo.save(user);</span><br><span class="line">	<span class="keyword">return</span> user;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> User <span class="title">findByPhoneNumber1</span><span class="params">(String phoneNumber)</span></span>&#123;</span><br><span class="line">	User user = userRepo.findByPhoneNumber(phoneNumber);</span><br><span class="line">	user.setEmail(<span class="string">&quot;第二部222&quot;</span>);</span><br><span class="line">	userRepo.save(user);</span><br><span class="line">	<span class="keyword">return</span> user;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后写controller</p>
+<p>UserController.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">   <span class="meta">@GetMapping(&quot;/app/getUser1&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">transform</span><span class="params">()</span></span>&#123;</span><br><span class="line">	User user = appControllerService.findByPhoneNumber(<span class="string">&quot;123123&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> user.toString();</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@GetMapping(&quot;/app/getUser2&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">transform1</span><span class="params">()</span></span>&#123;</span><br><span class="line">	User user = appControllerService.findByPhoneNumber1(<span class="string">&quot;123123&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> user.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先执行接口 localhost/app/getUser1  该接口执行完成需要12s，在这期间 执行接口2 即localhost/app/getUser2。接口2 没有设置线程sleep。此时会发现接口2 不会立马执行完，而是要等待接口1 （12秒之后）执行完成之后 才会执行接口1。</p>
+<p>这样 就表示设置悲观锁成功，方法2修改的数据不会被覆盖。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2018/10/07/springboot%E4%B9%8B%E4%B9%90%E8%A7%82%E9%94%81%E5%92%8C%E6%82%B2%E8%A7%82%E9%94%81/" title="springboot之乐观锁和悲观锁" target="_blank" rel="external">http://example.com/2018/10/07/springboot之乐观锁和悲观锁/</a>
+    </li>
+    
+<!--     <li class="post-copyright-license"> -->
+<!--       <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！ -->
+<!--     </li> -->
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/Threadv" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/Threadv" target="_blank"><span class="text-dark">April</span><small class="ml-1x"></small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2018/10/07/Spring%20boot%20%E5%88%9B%E5%BB%BA/" title="Spring boot 创建"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2018/10/05/logstash.conf/" title="logstash.conf"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>$</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>Maybe you could buy me a cup of coffee.</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open alipay app scan this qrcode, buy me a coffee!</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open wechat app scan this qrcode, buy me a coffee!</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> alipay</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> wechat payment</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/Threadv" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/Threadv" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/Threadv" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

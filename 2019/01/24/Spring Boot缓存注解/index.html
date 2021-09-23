@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Spring Boot缓存注解 | April</title>
+  <meta name="description" content="Spring Boot缓存注解 123456789101112131415161718Cache注解详解@CacheConfig：主要用于配置该类中会用到的一些共用的缓存配置。在这里@CacheConfig(cacheNames &#x3D; &quot;users&quot;)：配置了该数据访问对象中返回的内容将存储于名为users的缓存对象中，我们也可以不使用该注解，直接通过@Cacheable自己配">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Boot缓存注解">
+<meta property="og:url" content="http://example.com/2019/01/24/Spring%20Boot%E7%BC%93%E5%AD%98%E6%B3%A8%E8%A7%A3/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Spring Boot缓存注解 123456789101112131415161718Cache注解详解@CacheConfig：主要用于配置该类中会用到的一些共用的缓存配置。在这里@CacheConfig(cacheNames &#x3D; &quot;users&quot;)：配置了该数据访问对象中返回的内容将存储于名为users的缓存对象中，我们也可以不使用该注解，直接通过@Cacheable自己配">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-01-24T06:19:51.000Z">
+<meta property="article:modified_time" content="2021-09-22T11:19:04.609Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="springboot">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://example.com/2019/01/24/Spring%20Boot%E7%BC%93%E5%AD%98%E6%B3%A8%E8%A7%A3/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/Threadv" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">April</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">Repository</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">Books</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/Threadv" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/Threadv" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/Threadv" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8/">云服务器</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Design-Patterns/" rel="tag">Design Patterns</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Html/" rel="tag">Html</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Http/" rel="tag">Http</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sort/" rel="tag">Sort</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/" rel="tag">algorithm</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ali-weixin-pay/" rel="tag">ali/weixin pay</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/centOS/" rel="tag">centOS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/idea/" rel="tag">idea</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/" rel="tag">jvm</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/logstash/" rel="tag">logstash</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pytest/" rel="tag">pytest</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/" rel="tag">springboot</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/util/" rel="tag">util</a><span class="tag-list-count">16</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/" rel="tag">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wechat/" rel="tag">wechat</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/" rel="tag">我的世界</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E7%A8%8B/" rel="tag">线程</a><span class="tag-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Design-Patterns/" style="font-size: 13.64px;">Design Patterns</a> <a href="/tags/Git/" style="font-size: 13px;">Git</a> <a href="/tags/Html/" style="font-size: 13px;">Html</a> <a href="/tags/Http/" style="font-size: 13.27px;">Http</a> <a href="/tags/JavaScript/" style="font-size: 13.55px;">JavaScript</a> <a href="/tags/Sort/" style="font-size: 13.82px;">Sort</a> <a href="/tags/algorithm/" style="font-size: 13.18px;">algorithm</a> <a href="/tags/ali-weixin-pay/" style="font-size: 13.36px;">ali/weixin pay</a> <a href="/tags/centOS/" style="font-size: 13px;">centOS</a> <a href="/tags/docker/" style="font-size: 13.73px;">docker</a> <a href="/tags/elasticsearch/" style="font-size: 13px;">elasticsearch</a> <a href="/tags/go/" style="font-size: 13.18px;">go</a> <a href="/tags/hexo/" style="font-size: 13px;">hexo</a> <a href="/tags/idea/" style="font-size: 13px;">idea</a> <a href="/tags/java/" style="font-size: 14px;">java</a> <a href="/tags/jvm/" style="font-size: 13.18px;">jvm</a> <a href="/tags/linux/" style="font-size: 13.82px;">linux</a> <a href="/tags/logstash/" style="font-size: 13.27px;">logstash</a> <a href="/tags/mysql/" style="font-size: 13.45px;">mysql</a> <a href="/tags/php/" style="font-size: 13.18px;">php</a> <a href="/tags/pytest/" style="font-size: 13px;">pytest</a> <a href="/tags/python/" style="font-size: 13.36px;">python</a> <a href="/tags/springboot/" style="font-size: 13.73px;">springboot</a> <a href="/tags/tomcat/" style="font-size: 13px;">tomcat</a> <a href="/tags/util/" style="font-size: 13.91px;">util</a> <a href="/tags/vue/" style="font-size: 13px;">vue</a> <a href="/tags/wechat/" style="font-size: 13.09px;">wechat</a> <a href="/tags/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/" style="font-size: 13px;">我的世界</a> <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" style="font-size: 13.09px;">消息队列</a> <a href="/tags/%E7%BA%BF%E7%A8%8B/" style="font-size: 13.18px;">线程</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a><span class="archive-list-count">22</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/17/linux/linux_shell/" class="title">linux—shell</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-17T05:02:19.000Z" itemprop="datePublished">2020-05-17</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/16/linux/linux_awk_sed/" class="title">linux-awk\sed 示例</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-16T07:02:19.000Z" itemprop="datePublished">2020-05-16</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/11/linux/linux_bash/" class="title">linux—bash</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-11T07:02:19.000Z" itemprop="datePublished">2020-04-11</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/16/go%E5%9F%BA%E7%A1%80/" class="title">go基础知识</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-16T11:20:35.000Z" itemprop="datePublished">2020-03-16</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/16/go%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/" class="title">go安装和配置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-16T11:20:35.000Z" itemprop="datePublished">2020-03-16</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Spring Boot缓存注解" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Spring Boot缓存注解
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2019/01/24/Spring%20Boot%E7%BC%93%E5%AD%98%E6%B3%A8%E8%A7%A3/" class="article-date">
+	  <time datetime="2019-01-24T06:19:51.000Z" itemprop="datePublished">2019-01-24</time>
+	</a>
+</span>
+        
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/springboot/" rel="tag">springboot</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/01/24/Spring%20Boot%E7%BC%93%E5%AD%98%E6%B3%A8%E8%A7%A3/#comments" class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h5 id="spring-boot缓存注解"><a class="markdownIt-Anchor" href="#spring-boot缓存注解"></a> Spring Boot缓存注解</h5>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Cache注解详解</span><br><span class="line">@CacheConfig：主要用于配置该类中会用到的一些共用的缓存配置。在这里@CacheConfig(cacheNames = &quot;users&quot;)：配置了该数据访问对象中返回的内容将存储于名为users的缓存对象中，我们也可以不使用该注解，直接通过@Cacheable自己配置缓存集的名字来定义。</span><br><span class="line"></span><br><span class="line">@Cacheable：配置了findByName函数的返回值将被加入缓存。同时在查询时，会先从缓存中获取，若不存在才再发起对数据库的访问。该注解主要有下面几个参数：</span><br><span class="line"></span><br><span class="line">value、cacheNames：两个等同的参数（cacheNames为Spring 4新增，作为value的别名），用于指定缓存存储的集合名。由于Spring 4中新增了@CacheConfig，因此在Spring 3中原本必须有的value属性，也成为非必需项了</span><br><span class="line">key：缓存对象存储在Map集合中的key值，非必需，缺省按照函数的所有参数组合作为key值，若自己配置需使用SpEL表达式，比如：@Cacheable(key = &quot;#p0&quot;)：使用函数第一个参数作为缓存的key值，更多关于SpEL表达式的详细内容可参考官方文档</span><br><span class="line">condition：缓存对象的条件，非必需，也需使用SpEL表达式，只有满足表达式条件的内容才会被缓存，比如：@Cacheable(key = &quot;#p0&quot;, condition = &quot;#p0.length() &lt; 3&quot;)，表示只有当第一个参数的长度小于3的时候才会被缓存，若做此配置上面的AAA用户就不会被缓存，读者可自行实验尝试。</span><br><span class="line">unless：另外一个缓存条件参数，非必需，需使用SpEL表达式。它不同于condition参数的地方在于它的判断时机，该条件是在函数被调用之后才做判断的，所以它可以通过对result进行判断。</span><br><span class="line">keyGenerator：用于指定key生成器，非必需。若需要指定一个自定义的key生成器，我们需要去实现org.springframework.cache.interceptor.KeyGenerator接口，并使用该参数来指定。需要注意的是：该参数与key是互斥的</span><br><span class="line">cacheManager：用于指定使用哪个缓存管理器，非必需。只有当有多个时才需要使用</span><br><span class="line">cacheResolver：用于指定使用那个缓存解析器，非必需。需通过org.springframework.cache.interceptor.CacheResolver接口来实现自己的缓存解析器，并用该参数指定。</span><br><span class="line">除了这里用到的两个注解之外，还有下面几个核心注解：</span><br><span class="line"></span><br><span class="line">@CachePut：配置于函数上，能够根据参数定义条件来进行缓存，它与@Cacheable不同的是，它每次都会真是调用函数，所以主要用于数据新增和修改操作上。它的参数与@Cacheable类似，具体功能可参考上面对@Cacheable参数的解析</span><br><span class="line">@CacheEvict：配置于函数上，通常用在删除方法上，用来从缓存中移除相应数据。除了同@Cacheable一样的参数之外，它还有下面两个参数：</span><br><span class="line">allEntries：非必需，默认为false。当为true时，会移除所有数据</span><br><span class="line">beforeInvocation：非必需，默认为false，会在调用方法之后移除数据。当为true时，会在调用方法之前移除数据。</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Cacheable(cacheNames =&quot;ktx_fudai_user_&quot;,key = &quot;&#x27;ktx_fudai_user_&#x27;+#root.args[0]&quot; )</span></span><br><span class="line"><span class="function">ActivityUser <span class="title">findActivityUserById</span><span class="params">(Integer id)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Cacheable(cacheNames =&quot;ktx_fudai_user_&quot;,key = &quot;&#x27;ktx_fudai_user_&#x27;+#root.args[0]&quot; )</span></span><br><span class="line"><span class="function">ActivityUser <span class="title">findActivityUserByUnionId</span><span class="params">(String unionId)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="meta">@Caching(evict = &#123;</span></span><br><span class="line"><span class="meta">        @CacheEvict(cacheNames = &quot;ktx_fudai_user_&quot;,key = &quot;&#x27;ktx_fudai_user_&#x27;+#root.args[0].id&quot;),</span></span><br><span class="line"><span class="meta">        @CacheEvict(cacheNames = &quot;ktx_fudai_user_&quot;,key = &quot;&#x27;ktx_fudai_user_&#x27;+#root.args[0].unionId&quot;)</span></span><br><span class="line"><span class="meta">&#125;)</span></span><br><span class="line"><span class="function">ActivityUser <span class="title">save</span><span class="params">(ActivityUser activityUser)</span></span>;</span><br></pre></td></tr></table></figure>
+<p><strong>@Cacheable 作用和配置方法</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>解释</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td>缓存的名称，在 spring 配置文件中定义，必须指定至少一个</td>
+<td>@Cacheable(value=”testcache”,key=”#userName”)</td>
+</tr>
+<tr>
+<td>key</td>
+<td>缓存的 key，可以为空，如果指定要按照 SpEL 表达式编写，如果不指定，则缺省按照方法的所有参数进行组合</td>
+<td>@Cacheable(value=”testcache”,key=”#userName”)</td>
+</tr>
+<tr>
+<td>condition</td>
+<td>缓存的条件，可以为空，使用 SpEL 编写，返回 true 或者 false，只有为 true 才进行缓存</td>
+<td>@Cacheable(value=”testcache”,condition=”#userName.length()&gt;2”)</td>
+</tr>
+</tbody>
+</table>
+<h5 id="cacheput"><a class="markdownIt-Anchor" href="#cacheput"></a> <strong>@CachePut</strong></h5>
+<p>@CachePut 的作用 主要针对方法配置，能够根据方法的请求参数对其结果进行缓存，和 @Cacheable 不同的是，它每次都会触发真实方法的调用</p>
+<p><strong>@CachePut 作用和配置方法</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>解释</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td>缓存的名称，在 spring 配置文件中定义，必须指定至少一个</td>
+<td>@CachePut(value=”my cache”)</td>
+</tr>
+<tr>
+<td>key</td>
+<td>缓存的 key，可以为空，如果指定要按照 SpEL 表达式编写，如果不指定，则缺省按照方法的所有参数进行组合</td>
+<td>@CachePut(value=”testcache”,key=”#userName”)</td>
+</tr>
+<tr>
+<td>condition</td>
+<td>缓存的条件，可以为空，使用 SpEL 编写，返回 true 或者 false，只有为 true 才进行缓存</td>
+<td>@CachePut(value=”testcache”,condition=”#userName.length()&gt;2”)</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@CachePut(value=&quot;accountCache&quot;,key=&quot;#account.getName()&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Account <span class="title">updateAccount</span><span class="params">(Account account)</span> </span>&#123; </span><br><span class="line">   <span class="keyword">return</span> updateDB(account); </span><br><span class="line">&#125; </span><br><span class="line">  </span><br></pre></td></tr></table></figure>
+<h5 id="cacheevict"><a class="markdownIt-Anchor" href="#cacheevict"></a> @CacheEvict</h5>
+<p>@CachEvict 的作用 主要针对方法配置，能够根据一定的条件对缓存进行清空</p>
+<p><strong>@CacheEvict 作用和配置方法</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>解释</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td>缓存的名称，在 spring 配置文件中定义，必须指定至少一个</td>
+<td>@CachePut(value=”my cache”)</td>
+</tr>
+<tr>
+<td>key</td>
+<td>缓存的 key，可以为空，如果指定要按照 SpEL 表达式编写，如果不指定，则缺省按照方法的所有参数进行组合</td>
+<td>@CachePut(value=”testcache”,key=”#userName”)</td>
+</tr>
+<tr>
+<td>condition</td>
+<td>缓存的条件，可以为空，使用 SpEL 编写，返回 true 或者 false，只有为 true 才进行缓存</td>
+<td>@CachePut(value=”testcache”,condition=”#userName.length()&gt;2”)</td>
+</tr>
+<tr>
+<td>allEntries</td>
+<td>是否清空所有缓存内容，缺省为 false，如果指定为 true，则方法调用后将立即清空所有缓存</td>
+<td>@CachEvict(value=”testcache”,allEntries=true)</td>
+</tr>
+<tr>
+<td>beforeInvocation</td>
+<td>是否在方法执行前就清空，缺省为 false，如果指定为 true，则在方法还没有执行的时候就清空缓存，缺省情况下，如果方法执行抛出异常，则不会清空缓存</td>
+<td>@CachEvict(value=”testcache”，beforeInvocation=true)</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@CacheEvict(value=&quot;accountCache&quot;,key=&quot;#account.getName()&quot;)</span><span class="comment">// 清空accountCache 缓存  </span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateAccount</span><span class="params">(Account account)</span> </span>&#123;</span><br><span class="line">     updateDB(account); </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="meta">@CacheEvict(value=&quot;accountCache&quot;,allEntries=true)</span><span class="comment">// 清空accountCache 缓存</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reload</span><span class="params">()</span> </span>&#123;</span><br><span class="line">     reloadAll()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Cacheable(value=&quot;accountCache&quot;,condition=&quot;#userName.length() &lt;=4&quot;)</span><span class="comment">// 缓存名叫 accountCache </span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Account <span class="title">getAccountByName</span><span class="params">(String userName)</span> </span>&#123; </span><br><span class="line"> <span class="comment">// 方法内部实现不考虑缓存逻辑，直接实现业务</span></span><br><span class="line"> <span class="keyword">return</span> getFromDB(userName); </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h5 id="条件缓存"><a class="markdownIt-Anchor" href="#条件缓存"></a> 条件缓存</h5>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//@Cacheable将在执行方法之前( #result还拿不到返回值)判断condition，如果返回true，则查缓存； </span></span><br><span class="line"><span class="meta">@Cacheable(value = &quot;user&quot;, key = &quot;#id&quot;, condition = &quot;#id lt 10&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> User <span class="title">conditionFindById</span><span class="params">(<span class="keyword">final</span> Long id)</span>  </span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">//@CachePut将在执行完方法后（#result就能拿到返回值了）判断condition，如果返回true，则放入缓存； </span></span></span><br><span class="line"><span class="function">@<span class="title">CachePut</span><span class="params">(value = <span class="string">&quot;user&quot;</span>, key = <span class="string">&quot;#id&quot;</span>, condition = <span class="string">&quot;#result.username ne &#x27;zhang&#x27;&quot;</span>)</span>  </span></span><br><span class="line"><span class="function"><span class="keyword">public</span> User <span class="title">conditionSave</span><span class="params">(<span class="keyword">final</span> User user)</span>   </span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">//@CachePut将在执行完方法后（#result就能拿到返回值了）判断unless，如果返回false，则放入缓存；（即跟condition相反）</span></span></span><br><span class="line"><span class="function">@<span class="title">CachePut</span><span class="params">(value = <span class="string">&quot;user&quot;</span>, key = <span class="string">&quot;#user.id&quot;</span>, unless = <span class="string">&quot;#result.username eq &#x27;zhang&#x27;&quot;</span>)</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> User <span class="title">conditionSave2</span><span class="params">(<span class="keyword">final</span> User user)</span>   </span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">//@CacheEvict， beforeInvocation=false表示在方法执行之后调用（#result能拿到返回值了）；且判断condition，如果返回true，则移除缓存；</span></span></span><br><span class="line"><span class="function">@<span class="title">CacheEvict</span><span class="params">(value = <span class="string">&quot;user&quot;</span>, key = <span class="string">&quot;#user.id&quot;</span>, beforeInvocation = <span class="keyword">false</span>, condition = <span class="string">&quot;#result.username ne &#x27;zhang&#x27;&quot;</span>)</span>  </span></span><br><span class="line"><span class="function"><span class="keyword">public</span> User <span class="title">conditionDelete</span><span class="params">(<span class="keyword">final</span> User user)</span>   </span></span><br><span class="line"><span class="function">  </span></span><br></pre></td></tr></table></figure>
+<p><strong>@Caching</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Caching(put = &#123;</span></span><br><span class="line"><span class="meta">@CachePut(value = &quot;user&quot;, key = &quot;#user.id&quot;),</span></span><br><span class="line"><span class="meta">@CachePut(value = &quot;user&quot;, key = &quot;#user.username&quot;),</span></span><br><span class="line"><span class="meta">@CachePut(value = &quot;user&quot;, key = &quot;#user.email&quot;)</span></span><br><span class="line"><span class="meta">&#125;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> User <span class="title">save</span><span class="params">(User user)</span> </span>&#123;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h5 id="spel上下文数据"><a class="markdownIt-Anchor" href="#spel上下文数据"></a> SpEL上下文数据</h5>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>位置</th>
+<th>描述</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>methodName</td>
+<td>root对象</td>
+<td>当前被调用的方法名</td>
+<td>root.methodName</td>
+</tr>
+<tr>
+<td>method</td>
+<td>root对象</td>
+<td>当前被调用的方法</td>
+<td>root.methodName</td>
+</tr>
+<tr>
+<td>target</td>
+<td>root对象</td>
+<td>当前被调用的目标对象</td>
+<td>root.target</td>
+</tr>
+<tr>
+<td>targetClass</td>
+<td>root对象</td>
+<td>当前被调用的目标对象类</td>
+<td>root.targetClass</td>
+</tr>
+<tr>
+<td>args</td>
+<td>root对象</td>
+<td>当前被调用的方法的参数列表</td>
+<td>root.args[0]</td>
+</tr>
+<tr>
+<td>caches</td>
+<td>root对象</td>
+<td>当前方法调用使用的缓存列表（如@Cacheable(value={“cache1”, “cache2”})），则有两个cache</td>
+<td>root.caches[0].name</td>
+</tr>
+<tr>
+<td>argument</td>
+<td>执行上下文</td>
+<td>当前被调用的方法的参数，如findById(Long id)，我们可以通过#id拿到参数</td>
+<td><a target="_blank" rel="noopener" href="http://user.id">user.id</a></td>
+</tr>
+<tr>
+<td>result</td>
+<td>执行上下文</td>
+<td>方法执行后的返回值（仅当方法执行之后的判断有效，如‘unless’，’cache evict’的beforeInvocation=false）</td>
+<td>result</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@CacheEvict(value = &quot;user&quot;, key = &quot;#user.id&quot;, condition = &quot;#root.target.canCache() and #root.caches[0].get(#user.id).get().username ne #user.username&quot;, beforeInvocation = true)</span>  </span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">conditionUpdate</span><span class="params">(User user)</span> </span></span><br><span class="line"><span class="function"></span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2019/01/24/Spring%20Boot%E7%BC%93%E5%AD%98%E6%B3%A8%E8%A7%A3/" title="Spring Boot缓存注解" target="_blank" rel="external">http://example.com/2019/01/24/Spring Boot缓存注解/</a>
+    </li>
+    
+<!--     <li class="post-copyright-license"> -->
+<!--       <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！ -->
+<!--     </li> -->
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/Threadv" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/Threadv" target="_blank"><span class="text-dark">April</span><small class="ml-1x"></small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2019/01/28/http/http_Java%E4%BF%A1%E4%BB%BBSSL%E8%AF%81%E4%B9%A6/" title="Java 信任SSL证书"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2019/01/14/mysql/sql_%E6%95%B0%E6%8D%AE%E5%BA%93%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" title="数据库-性能优化"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>$</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>Maybe you could buy me a cup of coffee.</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open alipay app scan this qrcode, buy me a coffee!</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open wechat app scan this qrcode, buy me a coffee!</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> alipay</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> wechat payment</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/Threadv" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/Threadv" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/Threadv" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

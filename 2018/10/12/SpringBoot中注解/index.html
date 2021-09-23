@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>SpringBoot中注解 | April</title>
+  <meta name="description" content="SpringBoot中常见注解  @RestController @RestController被称为一个构造型（stereotype）注解。它为阅读代码的开发人员提供建议。对于Spring，该类扮演了一个特殊角色。它继承自@Controller注解。4.0之前的版本，spring MVC的组件都使用@Controller来标识当前类是一个控制器servlet。使用这个特性，我们可以开发REST">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot中注解">
+<meta property="og:url" content="http://example.com/2018/10/12/SpringBoot%E4%B8%AD%E6%B3%A8%E8%A7%A3/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="SpringBoot中常见注解  @RestController @RestController被称为一个构造型（stereotype）注解。它为阅读代码的开发人员提供建议。对于Spring，该类扮演了一个特殊角色。它继承自@Controller注解。4.0之前的版本，spring MVC的组件都使用@Controller来标识当前类是一个控制器servlet。使用这个特性，我们可以开发REST">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-10-12T12:19:23.000Z">
+<meta property="article:modified_time" content="2021-09-22T11:19:04.609Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="springboot">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://example.com/2018/10/12/SpringBoot%E4%B8%AD%E6%B3%A8%E8%A7%A3/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/Threadv" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">April</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">Repository</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">Books</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/Threadv" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/Threadv" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/Threadv" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8/">云服务器</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Design-Patterns/" rel="tag">Design Patterns</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Html/" rel="tag">Html</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Http/" rel="tag">Http</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sort/" rel="tag">Sort</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/" rel="tag">algorithm</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ali-weixin-pay/" rel="tag">ali/weixin pay</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/centOS/" rel="tag">centOS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/idea/" rel="tag">idea</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/" rel="tag">jvm</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/logstash/" rel="tag">logstash</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pytest/" rel="tag">pytest</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/" rel="tag">springboot</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/util/" rel="tag">util</a><span class="tag-list-count">16</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/" rel="tag">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wechat/" rel="tag">wechat</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/" rel="tag">我的世界</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E7%A8%8B/" rel="tag">线程</a><span class="tag-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Design-Patterns/" style="font-size: 13.64px;">Design Patterns</a> <a href="/tags/Git/" style="font-size: 13px;">Git</a> <a href="/tags/Html/" style="font-size: 13px;">Html</a> <a href="/tags/Http/" style="font-size: 13.27px;">Http</a> <a href="/tags/JavaScript/" style="font-size: 13.55px;">JavaScript</a> <a href="/tags/Sort/" style="font-size: 13.82px;">Sort</a> <a href="/tags/algorithm/" style="font-size: 13.18px;">algorithm</a> <a href="/tags/ali-weixin-pay/" style="font-size: 13.36px;">ali/weixin pay</a> <a href="/tags/centOS/" style="font-size: 13px;">centOS</a> <a href="/tags/docker/" style="font-size: 13.73px;">docker</a> <a href="/tags/elasticsearch/" style="font-size: 13px;">elasticsearch</a> <a href="/tags/go/" style="font-size: 13.18px;">go</a> <a href="/tags/hexo/" style="font-size: 13px;">hexo</a> <a href="/tags/idea/" style="font-size: 13px;">idea</a> <a href="/tags/java/" style="font-size: 14px;">java</a> <a href="/tags/jvm/" style="font-size: 13.18px;">jvm</a> <a href="/tags/linux/" style="font-size: 13.82px;">linux</a> <a href="/tags/logstash/" style="font-size: 13.27px;">logstash</a> <a href="/tags/mysql/" style="font-size: 13.45px;">mysql</a> <a href="/tags/php/" style="font-size: 13.18px;">php</a> <a href="/tags/pytest/" style="font-size: 13px;">pytest</a> <a href="/tags/python/" style="font-size: 13.36px;">python</a> <a href="/tags/springboot/" style="font-size: 13.73px;">springboot</a> <a href="/tags/tomcat/" style="font-size: 13px;">tomcat</a> <a href="/tags/util/" style="font-size: 13.91px;">util</a> <a href="/tags/vue/" style="font-size: 13px;">vue</a> <a href="/tags/wechat/" style="font-size: 13.09px;">wechat</a> <a href="/tags/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/" style="font-size: 13px;">我的世界</a> <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" style="font-size: 13.09px;">消息队列</a> <a href="/tags/%E7%BA%BF%E7%A8%8B/" style="font-size: 13.18px;">线程</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a><span class="archive-list-count">22</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/17/linux/linux_shell/" class="title">linux—shell</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-17T05:02:19.000Z" itemprop="datePublished">2020-05-17</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/16/linux/linux_awk_sed/" class="title">linux-awk\sed 示例</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-16T07:02:19.000Z" itemprop="datePublished">2020-05-16</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/11/linux/linux_bash/" class="title">linux—bash</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-11T07:02:19.000Z" itemprop="datePublished">2020-04-11</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/16/go%E5%9F%BA%E7%A1%80/" class="title">go基础知识</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-16T11:20:35.000Z" itemprop="datePublished">2020-03-16</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/16/go%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/" class="title">go安装和配置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-16T11:20:35.000Z" itemprop="datePublished">2020-03-16</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-SpringBoot中注解" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      SpringBoot中注解
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2018/10/12/SpringBoot%E4%B8%AD%E6%B3%A8%E8%A7%A3/" class="article-date">
+	  <time datetime="2018-10-12T12:19:23.000Z" itemprop="datePublished">2018-10-12</time>
+	</a>
+</span>
+        
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/springboot/" rel="tag">springboot</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2018/10/12/SpringBoot%E4%B8%AD%E6%B3%A8%E8%A7%A3/#comments" class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h4 id="springboot中常见注解"><a class="markdownIt-Anchor" href="#springboot中常见注解"></a> SpringBoot中常见注解</h4>
+<h6 id="restcontroller"><a class="markdownIt-Anchor" href="#restcontroller"></a> @RestController</h6>
+<p>@RestController被称为一个构造型（stereotype）注解。它为阅读代码的开发人员提供建议。对于Spring，该类扮演了一个特殊角色。它继承自@Controller注解。4.0之前的版本，spring MVC的组件都使用@Controller来标识当前类是一个控制器servlet。使用这个特性，我们可以开发REST服务的时候不需要使用@Controller而专门的@RestController。</p>
+<p></p>
+<h6 id="requestmapping"><a class="markdownIt-Anchor" href="#requestmapping"></a> @RequestMapping</h6>
+<p>注解提供路由信息。它告诉Spring任何来自&quot;/&quot;路径的HTTP请求都应该被映射到home方法。@RestController注解告诉Spring以字符串的形式渲染结果，并直接返回给调用者。该注解有六个属性：</p>
+<p></p>
+<p>params：指定request中必须包含某些参数值是，才让该方法处理。</p>
+<p>headers：指定request中必须包含某些指定的header值，才能让该方法处理请求。</p>
+<p>value：指定请求的实际地址，指定的地址可以是URI Template 模式</p>
+<p>method：指定请求的method类型， GET、POST、PUT、DELETE等</p>
+<p>consumes：指定处理请求的提交内容类型（Content-Type），如application/json,text/html</p>
+<p>produces：指定返回的内容类型，仅当request请求头中的(Accept)类型中包含该指定类型才返回</p>
+<p></p>
+<h6 id="enableautoconfiguration"><a class="markdownIt-Anchor" href="#enableautoconfiguration"></a> @EnableAutoConfiguration</h6>
+<p>@EnableAutoConfiguration。这个注解告诉Spring Boot根据添加的jar依赖猜测你想如何配置Spring。由于spring-boot-starter-web添加了Tomcat和Spring MVC，所以auto-configuration将假定正在开发一个web应用并相应地对Spring进行设置。Starter POMs和Auto-Configuration设计auto-configuration的目的是更好的使用&quot;Starter POMs&quot;，但这两个概念没有直接的联系。可以自由地挑选starter POMs以外的jar依赖，并且Spring Boot将仍旧尽最大努力去自动配置你的应用</p>
+<p></p>
+<p></p>
+<h6 id="configuration"><a class="markdownIt-Anchor" href="#configuration"></a> @Configuration</h6>
+<p>Spring Boot提倡基于Java的配置。尽管可以使用一个XML源来调用SpringApplication.run()，但官方建议使用@Configuration类作为主要源。一般定义main方法的类也是主要@Configuration的一个很好候选。不需要将所有的@Configuration放进一个单独的类。@Import注解可以用来导入其他配置类。另外也可以使用@ComponentScan注解自动收集所有的Spring组件，包括@Configuration类。</p>
+<p>如果需要使用基于XML的配置，官方建议仍旧从一个@Configuration类开始。可以使用附加的@ImportResource注解加载XML配置文件。</p>
+<p>@Configuration注解该类，等价与XML中配置beans；用@Bean标注方法等价于XML中配置bean。</p>
+<p></p>
+<h6 id="componentscan"><a class="markdownIt-Anchor" href="#componentscan"></a> @ComponentScan</h6>
+<p>表示将该类自动发现扫描组件。如果扫描到有@Component、@Controller、@Service等这些注解的类，并注册为Bean，可以自动收集所有的Spring组件，包括@Configuration类。使用@ComponentScan注解搜索beans，并结合@Autowired注解导入。可以自动收集所有的Spring组件，包括@Configuration类。如果没有配置，Spring Boot会扫描启动类所在包下以及子包下的使用了@Service,@Repository等注解的类。</p>
+<p></p>
+<h6 id="springbootapplication"><a class="markdownIt-Anchor" href="#springbootapplication"></a> @SpringBootApplication</h6>
+<p>@SpringBootApplication // 等同于@Configuration @EnableAutoConfiguration @ComponentScan</p>
+<h6 id="profiles"><a class="markdownIt-Anchor" href="#profiles"></a> @Profiles</h6>
+<p>Spring Profiles提供了一种隔离应用程序配置的方式，并让这些配置只能在特定的环境下生效。任何@Component或@Configuration都能被@Profile标记，从而限制加载它的时机。</p>
+<h6 id="controlleradvice"><a class="markdownIt-Anchor" href="#controlleradvice"></a> @ControllerAdvice</h6>
+<p>包含@Component。可以被扫描到。统一处理异常。</p>
+<h6 id="exceptionhandler"><a class="markdownIt-Anchor" href="#exceptionhandler"></a> @ExceptionHandler</h6>
+<p>用在方法上面表示遇到这个异常就执行以下方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> * 全局异常处理</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> */</span> </span><br><span class="line"></span><br><span class="line"><span class="meta">@ControllerAdvice</span> </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GlobalDefaultExceptionHandler</span> </span>&#123; </span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String DEFAULT_ERROR_VIEW = <span class="string">&quot;error&quot;</span>; </span><br><span class="line"></span><br><span class="line"><span class="meta">@ExceptionHandler(&#123;TypeMismatchException.class,NumberFormatException.class&#125;)</span> </span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ModelAndView <span class="title">formatErrorHandler</span><span class="params">(HttpServletRequest req, Exception e)</span> <span class="keyword">throws</span> Exception </span>&#123; </span><br><span class="line"></span><br><span class="line">        ModelAndView mav = <span class="keyword">new</span> ModelAndView(); </span><br><span class="line"></span><br><span class="line">        mav.addObject(<span class="string">&quot;error&quot;</span>,<span class="string">&quot;参数类型错误&quot;</span>); </span><br><span class="line"></span><br><span class="line">        mav.addObject(<span class="string">&quot;exception&quot;</span>, e); </span><br><span class="line"></span><br><span class="line">        mav.addObject(<span class="string">&quot;url&quot;</span>, RequestUtils.getCompleteRequestUrl(req)); </span><br><span class="line"></span><br><span class="line">        mav.addObject(<span class="string">&quot;timestamp&quot;</span>, <span class="keyword">new</span> Date()); </span><br><span class="line"></span><br><span class="line">        mav.setViewName(DEFAULT_ERROR_VIEW); </span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> mav; </span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="value"><a class="markdownIt-Anchor" href="#value"></a> @value</h6>
+<p>通过@value注解来读取application.properties里面的配置，使用实例参考：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/************** application.properties *************/</span></span><br><span class="line"></span><br><span class="line">qq_api_key=********<span class="number">1</span>***********</span><br><span class="line"></span><br><span class="line">qq_api_secrt=******<span class="number">2</span>***********</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"><span class="comment">/************* Java **************/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Value(&quot;$&#123;qq_api_key&#125;&quot;)</span> </span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> String API_KEY; </span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"><span class="meta">@Value(&quot;$&#123;qq_api_secrt&#125;&quot;)</span> </span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> String API_SECRET;</span><br></pre></td></tr></table></figure>
+<h6 id="responsebody"><a class="markdownIt-Anchor" href="#responsebody"></a> @ResponseBody</h6>
+<p>表示该方法的返回结果直接写入HTTP response body中一般在异步获取数据时使用，在使用@RequestMapping后，返回值通常解析为跳转路径，加上@Responsebody后返回结果不会被解析为跳转路径，而是直接写入HTTP response body中。如异步获取json数据，加上@Responsebody后，会直接返回json数据。</p>
+<h6 id="component"><a class="markdownIt-Anchor" href="#component"></a> @Component</h6>
+<p>泛指组件，当组件不好归类时，可以使用这个注解进行标注。一般公共的方法会用上这个注解</p>
+<h6 id="requestparam"><a class="markdownIt-Anchor" href="#requestparam"></a> @RequestParam</h6>
+<p>用在方法的参数前面，实例：</p>
+<p>@RequestParam String a=request.getParameter(“a”);</p>
+<h6 id="pathvariable"><a class="markdownIt-Anchor" href="#pathvariable"></a> @PathVariable</h6>
+<p>路径变量注解，其参数与大括号里的名字一样要保持一致，实例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">RequestMapping(<span class="string">&quot;yoodb/detail/&#123;id&#125;&quot;</span>) </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getByMacAddress</span><span class="params">(<span class="meta">@PathVariable</span> String id)</span></span>&#123; </span><br><span class="line"></span><br><span class="line">    <span class="comment">//do something; </span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="inject"><a class="markdownIt-Anchor" href="#inject"></a> @Inject</h6>
+<p>等价于默认的@Autowired，只是没有required属性。</p>
+<h6 id="bean"><a class="markdownIt-Anchor" href="#bean"></a> @Bean</h6>
+<p>相当于XML中的,放在方法的上面，而不是类，意思是产生一个bean,并交给spring管理。</p>
+<h6 id="autowired"><a class="markdownIt-Anchor" href="#autowired"></a> @AutoWired</h6>
+<p>自动导入依赖的bean。byType方式。把配置好的Bean拿来用，完成属性、方法的组装，它可以对类成员变量、方法及构造函数进行标注，完成自动装配的工作。当加上（required=false）时，就算找不到bean也不报错。</p>
+<h6 id="qualifier"><a class="markdownIt-Anchor" href="#qualifier"></a> @Qualifier</h6>
+<p>当有多个同一类型的Bean时，可以用@Qualifier(“name”)来指定。与@Autowired配合使用。@Qualifier限定描述符除了能根据名字进行注入，但能进行更细粒度的控制如何选择候选者，具体使用方式如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Qualifier(value = &quot;demoInfoService&quot;)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> DemoInfoService demoInfoService;</span><br></pre></td></tr></table></figure>
+<h6 id="resourcenamenametypetype"><a class="markdownIt-Anchor" href="#resourcenamenametypetype"></a> @Resource(name=“name”,type=“type”)</h6>
+<p>没有括号内内容的话，默认byName。与@Autowired类似。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2018/10/12/SpringBoot%E4%B8%AD%E6%B3%A8%E8%A7%A3/" title="SpringBoot中注解" target="_blank" rel="external">http://example.com/2018/10/12/SpringBoot中注解/</a>
+    </li>
+    
+<!--     <li class="post-copyright-license"> -->
+<!--       <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！ -->
+<!--     </li> -->
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/Threadv" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/Threadv" target="_blank"><span class="text-dark">April</span><small class="ml-1x"></small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2018/10/12/%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B/" title="枚举类型"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2018/10/12/application.properties/" title="application.properties"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>$</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>Maybe you could buy me a cup of coffee.</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open alipay app scan this qrcode, buy me a coffee!</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open wechat app scan this qrcode, buy me a coffee!</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> alipay</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> wechat payment</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/Threadv" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/Threadv" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/Threadv" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

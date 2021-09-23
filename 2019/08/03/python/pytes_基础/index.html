@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>pytest—基础知识 | April</title>
+  <meta name="description" content="pytest—基础知识  测试文件命名规则   测试文件应当命名为test_.py 或者 _test.py 测试函数、测试类方法应该命名为test_ 测试类应该命名为Test   测试函数返回的结果类型   PASSED(.) 测试通过 FAILED(F) 测试失败（也有可能是XPASS状态与strict选项冲突造成的失败） SKIPPED(s) 测试未被执行，指定跳过执行可以将测试标记为@py">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pytest—基础知识">
+<meta property="og:url" content="http://example.com/2019/08/03/python/pytes_%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="pytest—基础知识  测试文件命名规则   测试文件应当命名为test_.py 或者 _test.py 测试函数、测试类方法应该命名为test_ 测试类应该命名为Test   测试函数返回的结果类型   PASSED(.) 测试通过 FAILED(F) 测试失败（也有可能是XPASS状态与strict选项冲突造成的失败） SKIPPED(s) 测试未被执行，指定跳过执行可以将测试标记为@py">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-08-03T05:07:26.000Z">
+<meta property="article:modified_time" content="2021-09-22T11:19:04.641Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="pytest">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://example.com/2019/08/03/python/pytes_%E5%9F%BA%E7%A1%80/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/Threadv" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">April</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">Repository</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">Books</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/Threadv" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/Threadv" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/Threadv" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8/">云服务器</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Design-Patterns/" rel="tag">Design Patterns</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Html/" rel="tag">Html</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Http/" rel="tag">Http</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sort/" rel="tag">Sort</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/" rel="tag">algorithm</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ali-weixin-pay/" rel="tag">ali/weixin pay</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/centOS/" rel="tag">centOS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/idea/" rel="tag">idea</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/" rel="tag">jvm</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/logstash/" rel="tag">logstash</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pytest/" rel="tag">pytest</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/" rel="tag">springboot</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/" rel="tag">tomcat</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/util/" rel="tag">util</a><span class="tag-list-count">16</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/" rel="tag">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wechat/" rel="tag">wechat</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/" rel="tag">我的世界</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E7%A8%8B/" rel="tag">线程</a><span class="tag-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Design-Patterns/" style="font-size: 13.64px;">Design Patterns</a> <a href="/tags/Git/" style="font-size: 13px;">Git</a> <a href="/tags/Html/" style="font-size: 13px;">Html</a> <a href="/tags/Http/" style="font-size: 13.27px;">Http</a> <a href="/tags/JavaScript/" style="font-size: 13.55px;">JavaScript</a> <a href="/tags/Sort/" style="font-size: 13.82px;">Sort</a> <a href="/tags/algorithm/" style="font-size: 13.18px;">algorithm</a> <a href="/tags/ali-weixin-pay/" style="font-size: 13.36px;">ali/weixin pay</a> <a href="/tags/centOS/" style="font-size: 13px;">centOS</a> <a href="/tags/docker/" style="font-size: 13.73px;">docker</a> <a href="/tags/elasticsearch/" style="font-size: 13px;">elasticsearch</a> <a href="/tags/go/" style="font-size: 13.18px;">go</a> <a href="/tags/hexo/" style="font-size: 13px;">hexo</a> <a href="/tags/idea/" style="font-size: 13px;">idea</a> <a href="/tags/java/" style="font-size: 14px;">java</a> <a href="/tags/jvm/" style="font-size: 13.18px;">jvm</a> <a href="/tags/linux/" style="font-size: 13.82px;">linux</a> <a href="/tags/logstash/" style="font-size: 13.27px;">logstash</a> <a href="/tags/mysql/" style="font-size: 13.45px;">mysql</a> <a href="/tags/php/" style="font-size: 13.18px;">php</a> <a href="/tags/pytest/" style="font-size: 13px;">pytest</a> <a href="/tags/python/" style="font-size: 13.36px;">python</a> <a href="/tags/springboot/" style="font-size: 13.73px;">springboot</a> <a href="/tags/tomcat/" style="font-size: 13px;">tomcat</a> <a href="/tags/util/" style="font-size: 13.91px;">util</a> <a href="/tags/vue/" style="font-size: 13px;">vue</a> <a href="/tags/wechat/" style="font-size: 13.09px;">wechat</a> <a href="/tags/%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C/" style="font-size: 13px;">我的世界</a> <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" style="font-size: 13.09px;">消息队列</a> <a href="/tags/%E7%BA%BF%E7%A8%8B/" style="font-size: 13.18px;">线程</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a><span class="archive-list-count">22</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/17/linux/linux_shell/" class="title">linux—shell</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-17T05:02:19.000Z" itemprop="datePublished">2020-05-17</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/16/linux/linux_awk_sed/" class="title">linux-awk\sed 示例</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-16T07:02:19.000Z" itemprop="datePublished">2020-05-16</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/11/linux/linux_bash/" class="title">linux—bash</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-11T07:02:19.000Z" itemprop="datePublished">2020-04-11</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/16/go%E5%9F%BA%E7%A1%80/" class="title">go基础知识</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-16T11:20:35.000Z" itemprop="datePublished">2020-03-16</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/16/go%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/" class="title">go安装和配置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-16T11:20:35.000Z" itemprop="datePublished">2020-03-16</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-python/pytes_基础" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      pytest—基础知识
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2019/08/03/python/pytes_%E5%9F%BA%E7%A1%80/" class="article-date">
+	  <time datetime="2019-08-03T05:07:26.000Z" itemprop="datePublished">2019-08-03</time>
+	</a>
+</span>
+        
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/pytest/" rel="tag">pytest</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/08/03/python/pytes_%E5%9F%BA%E7%A1%80/#comments" class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h5 id="pytest基础知识"><a class="markdownIt-Anchor" href="#pytest基础知识"></a> pytest—基础知识</h5>
+<ol>
+<li><strong>测试文件命名规则</strong></li>
+</ol>
+<ul>
+<li>测试文件应当命名为test_<something>.py 或者 <something>_test.py</li>
+<li>测试函数、测试类方法应该命名为test_<something></li>
+<li>测试类应该命名为Test<Something></li>
+</ul>
+<ol start="2">
+<li><strong>测试函数返回的结果类型</strong></li>
+</ol>
+<ul>
+<li>PASSED(.) 测试通过</li>
+<li>FAILED(F) 测试失败（也有可能是XPASS状态与strict选项冲突造成的失败）</li>
+<li>SKIPPED(s) 测试未被执行，指定跳过执行可以将测试标记为@pytest.mark.skip(),或者使用@pytest.mark.skipif()指定跳过测试的条件</li>
+<li>xfail(x) 预期测试失败，并且确实失败，使用@pytest.mark.xfail()指定你认为会失败的测试用例</li>
+<li>XPASS(X) 预期测试失败，但实际上通过，不符合预期</li>
+<li>ERROR(E) 测试用例之外的代码触发了异常，可能由fixture引起，也可能由hook函数引起</li>
+</ul>
+<ol start="3">
+<li><strong>运行测试用例命令</strong></li>
+</ol>
+<ul>
+<li>pytest -v git_test_project/test_case/test_a.py（执行文件中所有case）</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">G:\vchen\github\project\project&gt;pytest -v git_test_project/test_case/test_a.py</span><br><span class="line">=============================== test session starts ===============================</span><br><span class="line">platform win32 -- Python 3.7.4, pytest-5.0.1, py-1.8.0, pluggy-0.12.0 -- d:\python3\python.exe</span><br><span class="line">cachedir: .pytest_cache</span><br><span class="line">rootdir: G:\vchen\github\project\project</span><br><span class="line">plugins: allure-pytest-2.8.0</span><br><span class="line">collected 4 items                            </span><br><span class="line"></span><br><span class="line">git_test_project/test_case/test_a.py::test_01 SKIPPED                         [ 25%]</span><br><span class="line">git_test_project/test_case/test_a.py::test_02 SKIPPED                         [ 50%]</span><br><span class="line">git_test_project/test_case/test_a.py::test_03 FAILED                          [ 75%]</span><br><span class="line">git_test_project/test_case/test_a.py::test_04 PASSED                          [100%]</span><br><span class="line"></span><br><span class="line">================================= FAILURES ========================================</span><br><span class="line"></span><br><span class="line">___________________________ test_03 ___________________________</span><br><span class="line"></span><br><span class="line">    @pytest.mark.unfinished</span><br><span class="line">    def test_03():</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">       assert (1,2,3) == (3,2,1)</span></span><br><span class="line">E       assert (1, 2, 3) == (3, 2, 1)</span><br><span class="line">E         At index 0 diff: 1 != 3</span><br><span class="line">E         Full diff:</span><br><span class="line">E         - (1, 2, 3)</span><br><span class="line">E         ?  ^     ^</span><br><span class="line">E         + (3, 2, 1)</span><br><span class="line">E         ?  ^     ^</span><br><span class="line"></span><br><span class="line">git_test_project\test_case\test_a.py:14: AssertionError</span><br><span class="line">================= 1 failed, 1 passed, 2 skipped, 1 warnings in 0.07 seconds =================</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>pytest -v git_test_project/test_case/test_a.py::test_01 （执行文件单个case test_01）</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">platform win32 -- Python 3.7.4, pytest-5.0.1, py-1.8.0, pluggy-0.12.0 -- d:\python3\python.exe</span><br><span class="line">cachedir: .pytest_cache</span><br><span class="line">rootdir: G:\vchen\github\project\project</span><br><span class="line">plugins: allure-pytest-2.8.0</span><br><span class="line">collected 1 item                                                                                                            </span><br><span class="line">git_test_project/test_case/test_a.py::test_01 PASSED                    [100%]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li><strong>命令行的选项</strong>  可使用pytest --help 查看全部选项</li>
+</ol>
+<ul>
+<li>–tb=no : 关闭错误信息回溯</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">G:\vchen\github\project\project&gt;pytest -v --tb=no</span><br><span class="line">=========================== test session starts ===========================</span><br><span class="line">platform win32 -- Python 3.7.4, pytest-5.0.1, py-1.8.0, pluggy-0.12.0 -- d:\python3\python.exe</span><br><span class="line">cachedir: .pytest_cache</span><br><span class="line">rootdir: G:\vchen\github\project\project</span><br><span class="line">plugins: allure-pytest-2.8.0</span><br><span class="line">collected 4 items                     </span><br><span class="line"></span><br><span class="line">git_test_project/test_case/test_a.py::test_01 SKIPPED                         [ 25%]</span><br><span class="line">git_test_project/test_case/test_a.py::test_02 SKIPPED                         [ 50%]</span><br><span class="line">git_test_project/test_case/test_a.py::test_03 FAILED                          [ 75%]</span><br><span class="line">git_test_project/test_case/test_a.py::test_04 PASSED                          [100%]</span><br><span class="line"></span><br><span class="line">=========== 1 failed, 1 passed, 2 skipped, 1 warnings in 0.15 seconds ====================</span><br></pre></td></tr></table></figure>
+<ul>
+<li>–collect-only : 使用–collect-only 选项可以展示在给定的配置下哪些测试用例会被运行</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">G:\vchen\github\project\project&gt;pytest --collect-only</span><br><span class="line">======================== test session starts ==============================</span><br><span class="line">platform win32 -- Python 3.7.4, pytest-5.0.1, py-1.8.0, pluggy-0.12.0</span><br><span class="line">rootdir: G:\vchen\github\project\project</span><br><span class="line">plugins: allure-pytest-2.8.0</span><br><span class="line">collected 2 items                                    </span><br><span class="line"></span><br><span class="line">&lt;Package G:\vchen\github\project\project\git_test_project\test_case&gt;</span><br><span class="line">  &lt;Module test_a.py&gt;</span><br><span class="line">    &lt;Function test_01&gt;</span><br><span class="line">    &lt;Function test_02&gt;</span><br><span class="line">    </span><br><span class="line">====================== no tests ran in 0.40 seconds ========================</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>-k : 允许使用表达式指定希望运行的测试用例</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">G:\vchen\github\project\project&gt;pytest -k &quot;test_01 or test_02&quot; --collect-only</span><br><span class="line">================================test session starts ==================================</span><br><span class="line">platform win32 -- Python 3.7.4, pytest-5.0.1, py-1.8.0, pluggy-0.12.0</span><br><span class="line">rootdir: G:\vchen\github\project\project</span><br><span class="line">plugins: allure-pytest-2.8.0</span><br><span class="line">collected 2 items             </span><br><span class="line"></span><br><span class="line">&lt;Package G:\vchen\github\project\project\git_test_project\test_case&gt;</span><br><span class="line">  &lt;Module test_a.py&gt;</span><br><span class="line">    &lt;Function test_01&gt;</span><br><span class="line">    &lt;Function test_02&gt;</span><br><span class="line"></span><br><span class="line">============================ no tests ran in 0.13 seconds ============================</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">pytest -k &quot;test_01 or test_02&quot;</span><br><span class="line">=================================== test session starts ===============================</span><br><span class="line">platform win32 -- Python 3.7.4, pytest-5.0.1, py-1.8.0, pluggy-0.12.0</span><br><span class="line">rootdir: G:\vchen\github\project\project</span><br><span class="line">plugins: allure-pytest-2.8.0</span><br><span class="line">collected 2 items                                 </span><br><span class="line"></span><br><span class="line">git_test_project\test_case\test_a.py ..                        [100%]</span><br><span class="line"></span><br><span class="line">================================ 2 passed in 0.10 seconds =============================</span><br></pre></td></tr></table></figure>
+<ul>
+<li>-m : 标记（marker）用于标记测试并分组，以便快速选中并运行</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.mark.finished</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_01</span>():</span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.mark.unfinished</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_03</span>():</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">G:\vchen\github\project\project&gt;pytest --verbose  git_test_project/test_case/test_a.py -m &quot;finished and unfinished&quot;</span><br><span class="line">====================== test session starts =====================</span><br><span class="line">platform win32 -- Python 3.7.4, pytest-5.0.1, py-1.8.0, pluggy-0.12.0 -- d:\python3\python.exe</span><br><span class="line">cachedir: .pytest_cache</span><br><span class="line">rootdir: G:\vchen\github\project\project</span><br><span class="line">plugins: allure-pytest-2.8.0</span><br><span class="line">collected 4 items / 4 deselected                </span><br><span class="line"></span><br><span class="line">===============4 deselected, 2 warnings in 0.02 seconds  ====================</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>-x : 正常情况，pytest 会运行每一个搜索到的测试用例。如果某个测试函数被断言失败，或者触发了外部异常，则该测试用例的运行就会到此为止</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@pytest.mark.unfinished</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_03</span>():</span></span><br><span class="line">    <span class="keyword">assert</span> (<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>) == (<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>)</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">G:\vchen\github\project\project&gt;pytest -x -v</span><br><span class="line">========================== test session starts ==========================</span><br><span class="line">platform win32 -- Python 3.7.4, pytest-5.0.1, py-1.8.0, pluggy-0.12.0 -- d:\python3\python.exe</span><br><span class="line">cachedir: .pytest_cache</span><br><span class="line">rootdir: G:\vchen\github\project\project</span><br><span class="line">plugins: allure-pytest-2.8.0</span><br><span class="line">collected 4 items                                  </span><br><span class="line"></span><br><span class="line">git_test_project/test_case/test_a.py::test_01 SKIPPED                   [ 25%]</span><br><span class="line">git_test_project/test_case/test_a.py::test_02 SKIPPED                   [ 50%]</span><br><span class="line">git_test_project/test_case/test_a.py::test_03 FAILED                    [ 75%]</span><br><span class="line"></span><br><span class="line">================================= FAILURES =================================</span><br><span class="line">_______________________________ test_03 _______________________________</span><br><span class="line"></span><br><span class="line">    @pytest.mark.unfinished</span><br><span class="line">    def test_03():</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">       assert (1,2,3) == (3,2,1)</span></span><br><span class="line">E       assert (1, 2, 3) == (3, 2, 1)</span><br><span class="line">E         At index 0 diff: 1 != 3</span><br><span class="line">E         Full diff:</span><br><span class="line">E         - (1, 2, 3)</span><br><span class="line">E         ?  ^     ^</span><br><span class="line">E         + (3, 2, 1)</span><br><span class="line">E         ?  ^     ^</span><br><span class="line"></span><br><span class="line">git_test_project\test_case\test_a.py:14: AssertionError</span><br><span class="line"></span><br><span class="line">==============1 failed, 2 skipped, 1 warnings in 0.13 seconds ==================</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>–maxfail=num : -x特点是一旦遇到失败就会全局停止。使用–maxfail可以明指定失败几次</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">G:\vchen\github\project\project&gt;pytest -v git_test_project/test_case/test_a.py  --maxfail=2 --tb=no</span><br><span class="line">============================== test session starts ==============================</span><br><span class="line">platform win32 -- Python 3.7.4, pytest-5.0.1, py-1.8.0, pluggy-0.12.0 -- d:\python3\python.exe</span><br><span class="line">cachedir: .pytest_cache</span><br><span class="line">rootdir: G:\vchen\github\project\project</span><br><span class="line">plugins: allure-pytest-2.8.0</span><br><span class="line">collected 4 items               </span><br><span class="line"></span><br><span class="line">git_test_project/test_case/test_a.py::test_01 SKIPPED                           [ 25%]</span><br><span class="line">git_test_project/test_case/test_a.py::test_02 SKIPPED                           [ 50%]</span><br><span class="line">git_test_project/test_case/test_a.py::test_03 FAILED                            [ 75%]</span><br><span class="line">git_test_project/test_case/test_a.py::test_04 PASSED                            [100%]</span><br><span class="line"></span><br><span class="line">================= 1 failed, 1 passed, 2 skipped, 1 warnings in 0.05 seconds =================</span><br></pre></td></tr></table></figure>
+<ul>
+<li>-s与–capture=method : -s 允许终端在测试运行时输出某些结果，包括任何符合标准的输出流信息。-s等价于–capture=no。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_01</span>():</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;222222222&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_02</span>():</span></span><br><span class="line">       <span class="built_in">print</span>(<span class="string">&quot;222222222&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.mark.unfinished</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_03</span>():</span></span><br><span class="line">    <span class="keyword">assert</span> (<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>) == (<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;222222222&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.mark.unfinished</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_04</span>():</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;222222222&quot;</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">G:\vchen\github\project\project&gt;pytest git_test_project/test_case -sv --tb=no</span><br><span class="line">================================ test session starts ================================</span><br><span class="line">platform win32 -- Python 3.7.4, pytest-5.0.1, py-1.8.0, pluggy-0.12.0 -- d:\python3\python.exe</span><br><span class="line">cachedir: .pytest_cache</span><br><span class="line">rootdir: G:\vchen\github\project\project</span><br><span class="line">plugins: allure-pytest-2.8.0</span><br><span class="line">collected 4 items        </span><br><span class="line"></span><br><span class="line">git_test_project/test_case/test_a.py::test_01 222222222</span><br><span class="line">PASSED</span><br><span class="line">git_test_project/test_case/test_a.py::test_02 222222222</span><br><span class="line">PASSED</span><br><span class="line">git_test_project/test_case/test_a.py::test_03 FAILED</span><br><span class="line">git_test_project/test_case/test_a.py::test_04 222222222</span><br><span class="line">PASSED</span><br><span class="line"></span><br><span class="line">======================= 1 failed, 3 passed, 1 warnings in 0.06 seconds =========================</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>-lf(–last-failed) : 当一个或多个测试失败时，定位到最后一个失败的测试用例并重新运行</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">G:\vchen\github\project\project&gt;pytest --lf -v --tb=no</span><br><span class="line">================================= test session starts ===========================================</span><br><span class="line">platform win32 -- Python 3.7.4, pytest-5.0.1, py-1.8.0, pluggy-0.12.0 -- d:\python3\python.exe</span><br><span class="line">cachedir: .pytest_cache</span><br><span class="line">rootdir: G:\vchen\github\project\project</span><br><span class="line">plugins: allure-pytest-2.8.0</span><br><span class="line">collected 4 items / 3 deselected / 1 selected                  </span><br><span class="line"></span><br><span class="line">run-last-failure: rerun previous 1 failure (skipped 66 files)</span><br><span class="line">git_test_project/test_case/test_a.py::test_03 FAILED                                  [100%]</span><br><span class="line">======================= 1 failed, 3 deselected, 1 warnings in 0.11 seconds =======================</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>–ff(–failed-first) : 与lf作用基本相同，不同在于–ff会运行完剩余的测试用例</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">G:\vchen\github\project\project&gt;pytest --ff -v --tb=no</span><br><span class="line">===================================== test session starts ======================================</span><br><span class="line">platform win32 -- Python 3.7.4, pytest-5.0.1, py-1.8.0, pluggy-0.12.0 -- d:\python3\python.exe</span><br><span class="line">cachedir: .pytest_cache</span><br><span class="line">rootdir: G:\vchen\github\project\project</span><br><span class="line">plugins: allure-pytest-2.8.0</span><br><span class="line">collected 4 items                         </span><br><span class="line"></span><br><span class="line">run-last-failure: rerun previous 1 failure first</span><br><span class="line"></span><br><span class="line">git_test_project/test_case/test_a.py::test_03 FAILED                                 [ 25%]</span><br><span class="line">git_test_project/test_case/test_a.py::test_01 PASSED                                 [ 50%]</span><br><span class="line">git_test_project/test_case/test_a.py::test_02 PASSED                                 [ 75%]</span><br><span class="line">git_test_project/test_case/test_a.py::test_04 PASSED                                 [100%]</span><br><span class="line"></span><br><span class="line">======================== 1 failed, 3 passed, 1 warnings in 0.13 seconds ========================</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>-v(–verbose) : 输出信息更详细。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">G:\vchen\github\project\project&gt;pytest -v --tb=no</span><br><span class="line">=================================== test session starts ===================================</span><br><span class="line">platform win32 -- Python 3.7.4, pytest-5.0.1, py-1.8.0, pluggy-0.12.0 -- d:\python3\python.exe</span><br><span class="line">cachedir: .pytest_cache</span><br><span class="line">rootdir: G:\vchen\github\project\project</span><br><span class="line">plugins: allure-pytest-2.8.0</span><br><span class="line">collected 4 items            </span><br><span class="line"></span><br><span class="line">git_test_project/test_case/test_a.py::test_01 PASSED                                   [ 25%]</span><br><span class="line">git_test_project/test_case/test_a.py::test_02 PASSED                                   [ 50%]</span><br><span class="line">git_test_project/test_case/test_a.py::test_03 FAILED                                   [ 75%]</span><br><span class="line">git_test_project/test_case/test_a.py::test_04 PASSED                                   [100%]</span><br><span class="line"></span><br><span class="line">====================== 1 failed, 3 passed, 1 warnings in 0.13 seconds =======================</span><br></pre></td></tr></table></figure>
+<ul>
+<li>-q(–quiet) : 与-v/–verbose作用相反，简化输出信息</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">G:\vchen\github\project\project&gt;pytest -q</span><br><span class="line">..F.                                                                 [100%]</span><br><span class="line">================================= FAILURES =================================</span><br><span class="line"></span><br><span class="line">__________________________________ test_03 __________________________________</span><br><span class="line"></span><br><span class="line">    @pytest.mark.unfinished</span><br><span class="line">    def test_03():</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">       assert (1,2,3) == (3,2,1)</span></span><br><span class="line">E       assert (1, 2, 3) == (3, 2, 1)</span><br><span class="line">E         At index 0 diff: 1 != 3</span><br><span class="line">E         Full diff:</span><br><span class="line">E         - (1, 2, 3)</span><br><span class="line">E         ?  ^     ^</span><br><span class="line">E         + (3, 2, 1)</span><br><span class="line">E         ?  ^     ^</span><br><span class="line"></span><br><span class="line">git_test_project\test_case\test_a.py:12: AssertionError</span><br><span class="line"></span><br><span class="line">1 failed, 3 passed, 1 warnings in 0.12 seconds</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>-l(–showlocals) :</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">G:\vchen\github\project\project&gt;pytest -l</span><br><span class="line">========================== test session starts ==========================</span><br><span class="line">platform win32 -- Python 3.7.4, pytest-5.0.1, py-1.8.0, pluggy-0.12.0</span><br><span class="line">rootdir: G:\vchen\github\project\project</span><br><span class="line">plugins: allure-pytest-2.8.0</span><br><span class="line">collected 4 items                       </span><br><span class="line"></span><br><span class="line">git_test_project\test_case\test_a.py ..F.                                [100%]</span><br><span class="line">=================================== FAILURES ===================================</span><br><span class="line">__________________________________________ test_03 ______________________________</span><br><span class="line"></span><br><span class="line">    @pytest.mark.unfinished</span><br><span class="line">    def test_03():</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">       assert (1,2,3) == (3,2,1)</span></span><br><span class="line">E       assert (1, 2, 3) == (3, 2, 1)</span><br><span class="line">E         At index 0 diff: 1 != 3</span><br><span class="line">E         Use -v to get the full diff</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">git_test_project\test_case\test_a.py:12: AssertionError</span><br><span class="line"></span><br><span class="line">============== 1 failed, 3 passed, 1 warnings in 0.14 seconds =================</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>–tb=style : 决定捕捉到失败时输出信息的显示方式。常用类型short,line,no</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">short: 仅输出assert的一行以及系统判定内容（不显示上下文）</span><br><span class="line">line: 只使用一行输出显示所有的错误信息</span><br><span class="line">no： 直接屏蔽全部回溯信息</span><br><span class="line">long: 输出详尽回溯信息</span><br><span class="line">auto: 默认值，如果多个测试用例失败，仅打印第一个和最后一个用例的回溯信息（格式与long模式一致）</span><br><span class="line">native： 只输出python标准库的回溯信息，不显示额外信息</span><br></pre></td></tr></table></figure>
+<ul>
+<li>–duration=N :  加快测试节奏。不关心测试如何运行，只统计测试过程中哪几个阶段是最慢的（包括每个测试用例的call,setup,teardown过程）。显示最慢的N个阶段耗时越长越靠前。如果使用–duration=0，则会将所有阶段按耗时从长到短排序后显示。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">G:\vchen\github\project\project&gt;pytest git_test_project/test_case -sv --durations=3</span><br><span class="line">===================================== test session starts =====================================</span><br><span class="line">platform win32 -- Python 3.7.4, pytest-5.0.1, py-1.8.0, pluggy-0.12.0 -- d:\python3\python.exe</span><br><span class="line">cachedir: .pytest_cache</span><br><span class="line">rootdir: G:\vchen\github\project\project</span><br><span class="line">plugins: allure-pytest-2.8.0</span><br><span class="line">collected 4 items      </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">git_test_project/test_case/test_a.py::test_01 222222222</span><br><span class="line">PASSED</span><br><span class="line">git_test_project/test_case/test_a.py::test_02 222222222</span><br><span class="line">PASSED</span><br><span class="line">git_test_project/test_case/test_a.py::test_03 FAILED</span><br><span class="line">git_test_project/test_case/test_a.py::test_04 222222222</span><br><span class="line">PASSED</span><br><span class="line"></span><br><span class="line">======================================== FAILURES ========================================</span><br><span class="line">________________________________________ test_03 __________________________________________</span><br><span class="line"></span><br><span class="line">    @pytest.mark.unfinished</span><br><span class="line">    def test_03():</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">       assert (1,2,3) == (3,2,1)</span></span><br><span class="line">E       assert (1, 2, 3) == (3, 2, 1)</span><br><span class="line">E         At index 0 diff: 1 != 3</span><br><span class="line">E         Full diff:</span><br><span class="line">E         - (1, 2, 3)</span><br><span class="line">E         ?  ^     ^</span><br><span class="line">E         + (3, 2, 1)</span><br><span class="line">E         ?  ^     ^</span><br><span class="line"></span><br><span class="line">git_test_project\test_case\test_a.py:14: AssertionError</span><br><span class="line"></span><br><span class="line">==================================== slowest 3 test durations ====================================</span><br><span class="line">5.00s call     git_test_project/test_case/test_a.py::test_04</span><br><span class="line">3.00s call     git_test_project/test_case/test_a.py::test_01</span><br><span class="line"></span><br><span class="line">(0.00 durations hidden.  Use -vv to show these durations.)</span><br><span class="line">======================== 1 failed, 3 passed, 1 warnings in 8.25 seconds ==========================</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;!--more--&gt;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2019/08/03/python/pytes_%E5%9F%BA%E7%A1%80/" title="pytest—基础知识" target="_blank" rel="external">http://example.com/2019/08/03/python/pytes_基础/</a>
+    </li>
+    
+<!--     <li class="post-copyright-license"> -->
+<!--       <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！ -->
+<!--     </li> -->
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/Threadv" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/Threadv" target="_blank"><span class="text-dark">April</span><small class="ml-1x"></small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2019/10/26/python/python_%E5%BA%8F%E5%88%97/" title="python-序列"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2019/06/12/linux/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" title="linux常用命令"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>$</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>Maybe you could buy me a cup of coffee.</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open alipay app scan this qrcode, buy me a coffee!</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open wechat app scan this qrcode, buy me a coffee!</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> alipay</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> wechat payment</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/Threadv" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/Threadv" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/Threadv" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
