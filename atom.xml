@@ -284,29 +284,6 @@
   </entry>
   
   <entry>
-    <title>python-list</title>
-    <link href="http://example.com/2019/10/26/python/python_list%E6%93%8D%E4%BD%9C/"/>
-    <id>http://example.com/2019/10/26/python/python_list%E6%93%8D%E4%BD%9C/</id>
-    <published>2019-10-26T08:48:35.000Z</published>
-    <updated>2021-09-22T11:19:04.642Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="python-list"><a class="markdownIt-Anchor" href="#python-list"></a> python-list</h2><h3 id="listsort方法和内置函数sorted"><a class="markdownIt-Anchor" href="#listsort方法和内置函数sorted"></a> list.sort方法和内置函数sorted</h3><ul><li>list.sort : 排序本列表，返回none</li><li>内置函数 sorted ：会新建一个列表作为返回值</li><li>list.sort 、 sorted都有可选的关键字参数：</li><li><ul><li>reverse  如果被设定为 True，被排序的序列里的元素会以降序输出（也就是说把最大值当作最 小值来排序）。这个参数的默认值是 False。</li></ul></li><li><ul><li>key  一个只有一个参数的函数，这个函数会被用在序列里的每一个元素上，所产生的结果 将是排序算法依赖的对比关键字。比如说，在对一些字符串排序时，可以用 key=str. lower 来实现忽略大小写的排序，或者是用 key=len 进行基于字符串长度的排序。这个参数的默认值是恒等函数（identity function），也就是默认用元素自己的值来排序。</li></ul></li></ul><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">fruits = [<span class="string">&#x27;grape&#x27;</span>, <span class="string">&#x27;raspberry&#x27;</span>, <span class="string">&#x27;apple&#x27;</span>, <span class="string">&#x27;banana&#x27;</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">sorted</span>(fruits)) </span><br><span class="line"><span class="comment">#[&#x27;apple&#x27;, &#x27;banana&#x27;, &#x27;grape&#x27;, &#x27;raspberry&#x27;]  </span></span><br><span class="line"><span class="built_in">print</span> (fruits) </span><br><span class="line"><span class="comment"># [&#x27;grape&#x27;, &#x27;raspberry&#x27;, &#x27;apple&#x27;, &#x27;banana&#x27;] </span></span><br><span class="line"><span class="built_in">sorted</span>(fruits, reverse=<span class="literal">True</span>) </span><br><span class="line"><span class="comment">#[&#x27;raspberry&#x27;, &#x27;grape&#x27;, &#x27;banana&#x27;, &#x27;apple&#x27;] </span></span><br><span class="line"><span class="built_in">sorted</span>(fruits, key=<span class="built_in">len</span>) </span><br><span class="line"><span class="comment"># [&#x27;grape&#x27;, &#x27;apple&#x27;, &#x27;banana&#x27;, &#x27;raspberry&#x27;]</span></span><br><span class="line"><span class="built_in">sorted</span>(fruits, key=<span class="built_in">len</span>, reverse=<span class="literal">True</span>) </span><br><span class="line"><span class="comment"># [&#x27;raspberry&#x27;, &#x27;banana&#x27;, &#x27;grape&#x27;, &#x27;apple&#x27;] </span></span><br><span class="line"><span class="built_in">print</span>(fruits) </span><br><span class="line"><span class="comment"># [&#x27;grape&#x27;, &#x27;raspberry&#x27;, &#x27;apple&#x27;, &#x27;banana&#x27;] </span></span><br><span class="line">fruits.sort()   </span><br><span class="line"><span class="built_in">print</span>(fruits)</span><br><span class="line"><span class="comment"># [&#x27;apple&#x27;, &#x27;banana&#x27;, &#x27;grape&#x27;, &#x27;raspberry&#x27;] </span></span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;python-list&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#python-list&quot;&gt;&lt;/a&gt; python-list&lt;/h2&gt;
-&lt;h3 id=&quot;listsort方法和内置函数sorted&quot;&gt;&lt;a class=&quot;markdow</summary>
-      
-    
-    
-    
-    
-    <category term="python" scheme="http://example.com/tags/python/"/>
-    
-  </entry>
-  
-  <entry>
     <title>python-元祖</title>
     <link href="http://example.com/2019/10/26/python/python_%E5%85%83%E7%BB%84/"/>
     <id>http://example.com/2019/10/26/python/python_%E5%85%83%E7%BB%84/</id>
@@ -343,6 +320,29 @@
       
     <summary type="html">&lt;h2 id=&quot;python-序列&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#python-序列&quot;&gt;&lt;/a&gt; python-序列&lt;/h2&gt;
 &lt;h5 id=&quot;内置序列类型&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#内置</summary>
+      
+    
+    
+    
+    
+    <category term="python" scheme="http://example.com/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>python-list</title>
+    <link href="http://example.com/2019/10/26/python/python_list%E6%93%8D%E4%BD%9C/"/>
+    <id>http://example.com/2019/10/26/python/python_list%E6%93%8D%E4%BD%9C/</id>
+    <published>2019-10-26T08:48:35.000Z</published>
+    <updated>2021-09-22T11:19:04.642Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="python-list"><a class="markdownIt-Anchor" href="#python-list"></a> python-list</h2><h3 id="listsort方法和内置函数sorted"><a class="markdownIt-Anchor" href="#listsort方法和内置函数sorted"></a> list.sort方法和内置函数sorted</h3><ul><li>list.sort : 排序本列表，返回none</li><li>内置函数 sorted ：会新建一个列表作为返回值</li><li>list.sort 、 sorted都有可选的关键字参数：</li><li><ul><li>reverse  如果被设定为 True，被排序的序列里的元素会以降序输出（也就是说把最大值当作最 小值来排序）。这个参数的默认值是 False。</li></ul></li><li><ul><li>key  一个只有一个参数的函数，这个函数会被用在序列里的每一个元素上，所产生的结果 将是排序算法依赖的对比关键字。比如说，在对一些字符串排序时，可以用 key=str. lower 来实现忽略大小写的排序，或者是用 key=len 进行基于字符串长度的排序。这个参数的默认值是恒等函数（identity function），也就是默认用元素自己的值来排序。</li></ul></li></ul><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">fruits = [<span class="string">&#x27;grape&#x27;</span>, <span class="string">&#x27;raspberry&#x27;</span>, <span class="string">&#x27;apple&#x27;</span>, <span class="string">&#x27;banana&#x27;</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">sorted</span>(fruits)) </span><br><span class="line"><span class="comment">#[&#x27;apple&#x27;, &#x27;banana&#x27;, &#x27;grape&#x27;, &#x27;raspberry&#x27;]  </span></span><br><span class="line"><span class="built_in">print</span> (fruits) </span><br><span class="line"><span class="comment"># [&#x27;grape&#x27;, &#x27;raspberry&#x27;, &#x27;apple&#x27;, &#x27;banana&#x27;] </span></span><br><span class="line"><span class="built_in">sorted</span>(fruits, reverse=<span class="literal">True</span>) </span><br><span class="line"><span class="comment">#[&#x27;raspberry&#x27;, &#x27;grape&#x27;, &#x27;banana&#x27;, &#x27;apple&#x27;] </span></span><br><span class="line"><span class="built_in">sorted</span>(fruits, key=<span class="built_in">len</span>) </span><br><span class="line"><span class="comment"># [&#x27;grape&#x27;, &#x27;apple&#x27;, &#x27;banana&#x27;, &#x27;raspberry&#x27;]</span></span><br><span class="line"><span class="built_in">sorted</span>(fruits, key=<span class="built_in">len</span>, reverse=<span class="literal">True</span>) </span><br><span class="line"><span class="comment"># [&#x27;raspberry&#x27;, &#x27;banana&#x27;, &#x27;grape&#x27;, &#x27;apple&#x27;] </span></span><br><span class="line"><span class="built_in">print</span>(fruits) </span><br><span class="line"><span class="comment"># [&#x27;grape&#x27;, &#x27;raspberry&#x27;, &#x27;apple&#x27;, &#x27;banana&#x27;] </span></span><br><span class="line">fruits.sort()   </span><br><span class="line"><span class="built_in">print</span>(fruits)</span><br><span class="line"><span class="comment"># [&#x27;apple&#x27;, &#x27;banana&#x27;, &#x27;grape&#x27;, &#x27;raspberry&#x27;] </span></span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;python-list&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#python-list&quot;&gt;&lt;/a&gt; python-list&lt;/h2&gt;
+&lt;h3 id=&quot;listsort方法和内置函数sorted&quot;&gt;&lt;a class=&quot;markdow</summary>
       
     
     
